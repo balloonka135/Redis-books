@@ -47,6 +47,15 @@ class User(BaseModel):
     full_name = fields.InstanceHashField(indexable=True)
     language = fields.InstanceHashField(indexable=True)
 
+    def hmget_dict(self, *args):
+        """
+        A call to hmget but which return a dict with field names as keys,
+        instead of only a list of values
+        """
+        values = self.hmget(*args)
+        keys = args or self._hashable_fields
+        return dict(zip(keys, values))
+
 
 class Book(related.RelatedModel):
     database = model.RedisDatabase(
@@ -96,3 +105,13 @@ class Rating(related.RelatedModel):
     rating_id = fields.InstanceHashField(indexable=True)
     user_id = related.FKInstanceHashField('User', related_name='%(namespace)s_%(model)s_set')
     book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
+
+    def hmget_dict(self, *args):
+        """
+        A call to hmget but which return a dict with field names as keys,
+        instead of only a list of values
+        """
+        values = self.hmget(*args)
+        keys = args or self._hashable_fields
+        return dict(zip(keys, values))
+
