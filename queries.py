@@ -1,17 +1,26 @@
 from collections import defaultdict, Counter
-from models import Author, Genre, Rating, User, Book
+from models import Author, Tag, Rating, User, Book, BooksTags, BooksAuthors
 
 
 def first_query():
     """
-    give 5 best books of genre 'drama'
+    give 5 best books with tag 'dystopia'
     """
 
-    genre_instance = Genre.get(name='drama')
-    # sort in asc order, retrieve last 5 books
-    books = Book.collection(
-        genre_id=genre_instance).sort(by='average_rating')[-5:]
-    return books
+    tags = Tag.collection(name__startswith='dystopia').instances()
+    book_tags = BooksTags.collection().instances()
+    result_books_tags = []
+    for book_tag in book_tags:
+        if book_tag.hmget('sk_tag_id') in tags:
+            result_books_tags.append(book_tag.hmget('sk_book_id'))
+
+    result = []
+    books = Book.collection().sort(by='average_rating')
+    for book in books:
+        if book.hmget('sk_book_id') in result_books_tags:
+            result.append(book)
+
+    return result[-5:]
 
 
 def third_query():
@@ -30,23 +39,30 @@ def third_query():
 
 def fifth_query():
     """
-    the worst books written by author 'J.K.Rowling'
+    the worst 5 books written by author 'J.K.Rowling'
     """
 
-    author = Author.get(full_name='J.K.Rowling')
-    books = Book.collection(author_id=author).sort(by='average_rating')[:5]
-    return books
+    author = Author.get(full_name='J.K. Rowling')
+    author_books = BooksAuthors.collection(sk_author_id=author).values_list('sk_book_id', flat=True)
+    books = Book.collection().sort(by='average_rating')
+
+    result = []
+    for book in books:
+        if book.hmget('sk_book_id') in author_books:
+            result.append(book)
+
+    return result[:5]
 
 
 def seventh_query():
     """
-    update book 'Harry Potter'
+    update book 'Gone Girl'
     """
 
-    book = Book.get(title='Harry Potter')
+    book = Book.get(title='Gone Girl')
     print(book)
     book.hmset(
-        average_rating='5',
+        average_rating='4.5',
         original_publication_year=1990,
         language_code='ru'
     )
