@@ -16,7 +16,7 @@ users_path = '/Users/irinanazarchuk/Desktop/data/users.csv'
 
 def input_authors(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 author_id, full_name = line.split(',')
                 author_id = author_id.strip()
@@ -28,7 +28,7 @@ def input_authors(filepath):
 
 def input_tags(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 tag_id, name = line.split(',')
                 tag_id = tag_id.strip()
@@ -40,7 +40,7 @@ def input_tags(filepath):
 
 def input_users(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 user_id, full_name, gender, language = line.split(',')
                 user_id = user_id.strip()
@@ -55,7 +55,7 @@ def input_users(filepath):
 
 def input_books(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 sk_book_id, book_id, best_book_id, work_id, books_count, \
                     isbn, original_publication_year, original_title, title, \
@@ -77,15 +77,6 @@ def input_books(filepath):
                 work_ratings_count = work_ratings_count.strip()
                 work_text_reviews_count = work_text_reviews_count.strip()
 
-                # try:
-                #     author_id = Author.get(author_id=a_id)
-                # except ValueError:
-                #     author_id = 'None'
-                #     # author_id = Author.collection(author_id=a_id).instances() # list of authors
-                #     # TODO: create several instances of the book
-                # except Exception:
-                #     author_id = 'None'
-
                 book = Book(
                     sk_book_id=sk_book_id, book_id=book_id, best_book_id=best_book_id, work_id=work_id, \
                     books_count=books_count, isbn=isbn, original_publication_year=original_publication_year, \
@@ -102,7 +93,7 @@ def input_books(filepath):
 
 def input_ratings(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 u_id, b_id, rating = line.split(',')
                 u_id = u_id.strip()
@@ -126,7 +117,7 @@ def input_ratings(filepath):
 
 def input_books_tags(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 t_id, b_id, count = line.split(',')
                 t_id = t_id.strip()
@@ -151,7 +142,7 @@ def input_books_tags(filepath):
 
 def input_books_authors(filepath):
     try:
-        with open(filepath) as f:
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
                 t_id, b_id = line.split(',')
                 t_id = t_id.strip()
@@ -173,13 +164,13 @@ def input_books_authors(filepath):
 
 
 if __name__ == '__main__':
-    input_authors(authors_path)
-    input_tags(tags_path)
-    input_users(users_path)
+    # input_authors(authors_path)
+    # input_tags(tags_path)
+    # input_users(users_path)
     input_books(books_path)
-    input_ratings(ratings_path)
-    input_books_tags(books_tags_path)
-    input_books_authors(books_authors_path)
+    # input_ratings(ratings_path)
+    # input_books_tags(books_tags_path)
+    # input_books_authors(books_authors_path)
 
 
 

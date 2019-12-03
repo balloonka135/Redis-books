@@ -47,7 +47,7 @@ class User(BaseModel):
         return dict(zip(keys, values))
 
 
-class Book(related.RelatedModel):
+class Book(BaseModel):
     sk_book_id = fields.InstanceHashField(indexable=True)
     book_id = fields.InstanceHashField(indexable=True)
     best_book_id = fields.InstanceHashField(indexable=True)
@@ -55,7 +55,7 @@ class Book(related.RelatedModel):
     books_count = fields.InstanceHashField(indexable=True)
     isbn = fields.InstanceHashField(indexable=True)
     original_publication_year = fields.InstanceHashField(indexable=True)
-    original_title = fields.InstanceHashField(indexable=True)
+    # original_title = fields.InstanceHashField(indexable=True)
     title = fields.InstanceHashField(indexable=True)
     language_code = fields.InstanceHashField(indexable=True)
     average_rating = fields.InstanceHashField(indexable=True)

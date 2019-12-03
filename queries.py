@@ -72,7 +72,7 @@ def seventh_query():
 def ninth_query():
     """
     for each user select books with same language
-    and that aren't older then 20 years
+    and that aren't older than 20 years
     """
 
     books = Book.collection(original_publication_year__gte=1999).instances()
