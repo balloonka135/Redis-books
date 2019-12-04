@@ -83,6 +83,7 @@ class Book(BaseRelatedModel):
     tag2 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
     tag3 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
     tag4 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    tag5 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
 
     def hmget_dict(self, *args):
         """

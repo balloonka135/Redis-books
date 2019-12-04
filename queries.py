@@ -4,35 +4,9 @@ from models import Author, Tag, Rating, User, Book, BooksTags, BooksAuthors
 
 def first_query():
     """
-    give 5 best books with tag 'dystopia'
+    give 5 best books with tag '100-books'
     """
-
-    # tags = Tag.collection(
-    #     name__startswith='dystopia').values_list('pk', flat=True)
-
-    # # tags = Tag.collection(name='2015-books-read').instances()
-    # tags_pk = [tag.pk.get() for tag in tags]
-
-    # book_tags = BooksTags.collection().instances()
-    # result_books_tags = []
-
-    # for book_tag in book_tags:
-    #     if book_tag.hmget('sk_tag_id')[0] in tags_pk:
-    #         result_books_tags.append(book_tag.hmget('sk_book_id')[0])
-
-    # result = []
-    # books = Book.collection().sort(by='average_rating')
-    # for book in books:
-    #     if book in result_books_tags:
-    #         result.append(book)
-
-    # if len(result) >= 5:
-    #     return result[-5:]
-    # else:
-    #     return result
-
-    # -------------- NEW --------------
-    tag = Tag.get(name='dystopia')
+    tag = Tag.get(name='100-books')
 
     books_1 = Book.collection(tag1=tag).instances(lazy=True)
     books_2 = Book.collection(tag2=tag).instances(lazy=True)
@@ -68,20 +42,6 @@ def fifth_query():
     """
     the worst 5 books written by author 'J.K.Rowling'
     """
-
-    # author = Author.get(full_name='J.K. Rowling')
-    # author_books = BooksAuthors.collection(sk_author_id=author).values_list('sk_book_id', flat=True)
-    # books = Book.collection().sort(by='average_rating')
-
-    # result = []
-    # for book in books:
-    #     if book in author_books:
-    #         result.append(book)
-
-    # print(result[:5])
-    # return result[:5]
-
-    # -------------- NEW --------------
     author = Author.get(full_name='J.K. Rowling')
 
     books_1 = Book.collection(author1=author).instances(lazy=True)
@@ -113,9 +73,10 @@ def seventh_query():
 
 
 def ninth_query():
+    # TODO: modify to rating > 4
     """
     for each user select books with same language
-    and that aren't older than 20 years
+    and that aren't older than 20 years and the rating is > 4
     """
 
     books = Book.collection(original_publication_year__gte=1999).instances()

@@ -86,11 +86,10 @@ def input_books(filepath):
                 isbn, original_publication_year, original_title, title, \
                 language_code, average_rating, ratings_count, \
                 work_ratings_count, work_text_reviews_count, \
-                    # CHECK the order
                 aid1, aid2, aid3, \
-                tid1, tid2, tid3, tid4 = line.split('\t')
+                tid1, tid2, tid3, tid4, tid5 = line.split('\t')
 
-                work_text_reviews_count = work_text_reviews_count.strip()
+                tid5 = tid5.strip()
 
                 # chinese code style...
                 if aid1.isspace():
@@ -149,6 +148,14 @@ def input_books(filepath):
                     except Exception:
                         tag4 = 'None'
 
+                if tid5.isspace():
+                    tag5 = 'None'
+                else:
+                    try:
+                        tag5 = Tag.get(tag_id=tid5)
+                    except Exception:
+                        tag5 = 'None'
+
                 book = Book(
                     sk_book_id=sk_book_id, book_id=book_id, best_book_id=best_book_id, work_id=work_id, \
                     books_count=books_count, isbn=isbn, original_publication_year=original_publication_year, \
@@ -157,7 +164,7 @@ def input_books(filepath):
                     work_ratings_count=work_ratings_count, \
                     work_text_reviews_count=work_text_reviews_count, \
                     author1=author1, author2=author2, author3=author3, \
-                    tag1=tag1, tag2=tag2, tag3=tag3, tag4=tag4
+                    tag1=tag1, tag2=tag2, tag3=tag3, tag4=tag4, tag5=tag5
                 )
 
                 # print(book.hmget_dict('book_id', 'author_id', 'title'))
@@ -238,7 +245,7 @@ def input_ratings(filepath):
 
 
 if __name__ == '__main__':
-    # input_authors(authors_path)
+    input_authors(authors_path)
     # input_tags(tags_path)
     # input_users(users_path)
     # input_books(books_path)
