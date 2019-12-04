@@ -1,26 +1,37 @@
 from collections import defaultdict, Counter
 from models import Author, Tag, Rating, User, Book, BooksTags, BooksAuthors
 
+# {'sk_tag_id': '85', 'sk_book_id': '4985'}
 
 def first_query():
+    # TODO: debug with fully loaded DB
     """
     give 5 best books with tag 'dystopia'
     """
 
-    tags = Tag.collection(name__startswith='dystopia').instances()
+    tags = Tag.collection(
+        name__startswith='dystopia').values_list('pk', flat=True)
+
+    # tags = Tag.collection(name='2015-books-read').instances()
+    tags_pk = [tag.pk.get() for tag in tags]
+
     book_tags = BooksTags.collection().instances()
     result_books_tags = []
+
     for book_tag in book_tags:
-        if book_tag.hmget('sk_tag_id') in tags:
-            result_books_tags.append(book_tag.hmget('sk_book_id'))
+        if book_tag.hmget('sk_tag_id')[0] in tags_pk:
+            result_books_tags.append(book_tag.hmget('sk_book_id')[0])
 
     result = []
     books = Book.collection().sort(by='average_rating')
     for book in books:
-        if book.hmget('sk_book_id') in result_books_tags:
+        if book in result_books_tags:
             result.append(book)
 
-    return result[-5:]
+    if len(result) >= 5:
+        return result[-5:]
+    else:
+        return result
 
 
 def third_query():
@@ -34,6 +45,7 @@ def third_query():
     most_common_user = num_user_occurs.most_common(1)
     user_id = most_common_user[0][0]
     user = User.get(user_id=user_id)
+
     return user
 
 
@@ -48,9 +60,10 @@ def fifth_query():
 
     result = []
     for book in books:
-        if book.hmget('sk_book_id') in author_books:
+        if book in author_books:
             result.append(book)
 
+    print(result[:5])
     return result[:5]
 
 
@@ -60,7 +73,6 @@ def seventh_query():
     """
 
     book = Book.get(title='Gone Girl')
-    print(book)
     book.hmset(
         average_rating='4.5',
         original_publication_year=1990,
@@ -76,6 +88,7 @@ def ninth_query():
     """
 
     books = Book.collection(original_publication_year__gte=1999).instances()
+    # books = Book.collection(original_publication_year=2008).instances()
     # generate list of book dictionaries
     books_list = [book.hmget_dict('title', 'language_code') for book in books]
 
@@ -88,10 +101,14 @@ def ninth_query():
         user_language = user['language']
         for book in books_list:
             if book['language_code'] == user_language:
-                result[user['full_name']].append(book['title'])
+                username = user['full_name'].encode('utf8')
+                book_title = book['title'].encode('utf8')
+                result[username].append(book_title)
 
+    print(result)
     return result
 
 
-
+if __name__ == '__main__':
+    first_query()
 

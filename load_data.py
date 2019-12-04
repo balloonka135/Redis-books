@@ -1,12 +1,13 @@
 """
 Data loading from csv files to Redis DB
 """
+
 from models import Author, Tag, Rating, \
     User, Book, BooksAuthors, BooksTags
 
 
 authors_path = '/Users/irinanazarchuk/Desktop/data/authors.csv'
-books_path = '/Users/irinanazarchuk/Desktop/data/books.csv'
+books_path = '/Users/irinanazarchuk/Desktop/data/books.tsv'
 books_authors_path = '/Users/irinanazarchuk/Desktop/data/books_authors.csv'
 ratings_path = '/Users/irinanazarchuk/Desktop/data/ratings.csv'
 tags_path = '/Users/irinanazarchuk/Desktop/data/tags.csv'
@@ -60,21 +61,8 @@ def input_books(filepath):
                 sk_book_id, book_id, best_book_id, work_id, books_count, \
                     isbn, original_publication_year, original_title, title, \
                     language_code, average_rating, ratings_count, \
-                    work_ratings_count, work_text_reviews_count = line.split(',')
+                    work_ratings_count, work_text_reviews_count = line.split('\t')
 
-                sk_book_id = sk_book_id.strip()
-                book_id = book_id.strip()
-                best_book_id = best_book_id.strip()
-                work_id = work_id.strip()
-                books_count = books_count.strip()
-                isbn = isbn.strip()
-                original_publication_year = original_publication_year.strip()
-                original_title = original_title.strip()
-                title = title.strip()
-                language_code = language_code.strip()
-                average_rating = average_rating.strip()
-                ratings_count = ratings_count.strip()
-                work_ratings_count = work_ratings_count.strip()
                 work_text_reviews_count = work_text_reviews_count.strip()
 
                 book = Book(
@@ -167,28 +155,12 @@ if __name__ == '__main__':
     # input_authors(authors_path)
     # input_tags(tags_path)
     # input_users(users_path)
-    input_books(books_path)
+    # input_books(books_path)
     # input_ratings(ratings_path)
     # input_books_tags(books_tags_path)
     # input_books_authors(books_authors_path)
 
 
 
-
-
-
-
-# create instance
-
-# book = Book(title='Lolita')
-
-# to set FK
-# books.genre.hset(genre._pk)
-# M2M
-# books.authors.sadd(author1._pk, author2._pk)
-
-# add several FK
-# book.authors.sadd(author1, author2)
-
-# filter instances and get [0] index
-# list(Person.collection(firstname='john', lastname='Smith')) 
+# to run in terminal, use:
+# export PYTHONIOENCODING=utf-8
