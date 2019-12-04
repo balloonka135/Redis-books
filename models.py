@@ -29,8 +29,7 @@ class Author(BaseModel):
 
 class Tag(BaseModel):
     tag_id = fields.InstanceHashField(indexable=True)
-    name = fields.InstanceHashField(indexable=True, indexes=[TextRangeIndex])
-    # name = fields.InstanceHashField(indexable=True)
+    name = fields.InstanceHashField(indexable=True)
 
     def hmget_dict(self, *args):
         """
@@ -58,7 +57,9 @@ class User(BaseModel):
         return dict(zip(keys, values))
 
 
-class Book(BaseModel):
+class Book(BaseRelatedModel):
+    namespace = 'books'
+
     sk_book_id = fields.InstanceHashField(indexable=True)
     book_id = fields.InstanceHashField(indexable=True)
     best_book_id = fields.InstanceHashField(indexable=True)
@@ -66,7 +67,6 @@ class Book(BaseModel):
     books_count = fields.InstanceHashField(indexable=True)
     isbn = fields.InstanceHashField(indexable=True)
     original_publication_year = fields.InstanceHashField(indexable=True, indexes=[TextRangeIndex])
-    # original_publication_year = fields.InstanceHashField(indexable=True)
     original_title = fields.InstanceHashField(indexable=True)
     title = fields.InstanceHashField(indexable=True)
     language_code = fields.InstanceHashField(indexable=True)
@@ -74,6 +74,15 @@ class Book(BaseModel):
     ratings_count = fields.InstanceHashField(indexable=True)
     work_ratings_count = fields.InstanceHashField(indexable=True)
     work_text_reviews_count = fields.InstanceHashField(indexable=True)
+
+    author1 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+    author2 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+    author3 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+
+    tag1 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    tag2 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    tag3 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    tag4 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
 
     def hmget_dict(self, *args):
         """
@@ -102,28 +111,28 @@ class Rating(BaseRelatedModel):
         return dict(zip(keys, values))
 
 
-class BooksTags(BaseRelatedModel):
-    namespace = 'books_tags'
+# class BooksTags(BaseRelatedModel):
+#     namespace = 'books_tags'
 
-    sk_tag_id = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    sk_book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
-    count = fields.InstanceHashField(indexable=True)
+#     sk_tag_id = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+#     sk_book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
+#     count = fields.InstanceHashField(indexable=True)
 
-    def hmget_dict(self, *args):
-        """
-        A call to hmget but which return a dict with field names as keys,
-        instead of only a list of values
-        """
-        values = self.hmget(*args)
-        keys = args or self._hashable_fields
-        return dict(zip(keys, values))
+#     def hmget_dict(self, *args):
+#         """
+#         A call to hmget but which return a dict with field names as keys,
+#         instead of only a list of values
+#         """
+#         values = self.hmget(*args)
+#         keys = args or self._hashable_fields
+#         return dict(zip(keys, values))
 
 
-class BooksAuthors(BaseRelatedModel):
-    namespace = 'books_authors'
+# class BooksAuthors(BaseRelatedModel):
+#     namespace = 'books_authors'
 
-    sk_author_id = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-    sk_book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
+#     sk_author_id = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+#     sk_book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
 
 
 
