@@ -57,7 +57,7 @@ class User(BaseModel):
         return dict(zip(keys, values))
 
 
-class Book(BaseRelatedModel):
+class Book(BaseModel):
     namespace = 'books'
 
     sk_book_id = fields.InstanceHashField(indexable=True)
@@ -75,15 +75,25 @@ class Book(BaseRelatedModel):
     work_ratings_count = fields.InstanceHashField(indexable=True)
     work_text_reviews_count = fields.InstanceHashField(indexable=True)
 
-    author1 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-    author2 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-    author3 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+    # author1 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+    # author2 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
+    # author3 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
 
-    tag1 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    tag2 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    tag3 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    tag4 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    tag5 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    # tag1 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    # tag2 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    # tag3 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    # tag4 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+    # tag5 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
+
+    author1 = fields.InstanceHashField(indexable=True)
+    author2 = fields.InstanceHashField(indexable=True)
+    author3 = fields.InstanceHashField(indexable=True)
+
+    tag1 = fields.InstanceHashField(indexable=True)
+    tag2 = fields.InstanceHashField(indexable=True)
+    tag3 = fields.InstanceHashField(indexable=True)
+    tag4 = fields.InstanceHashField(indexable=True)
+    tag5 = fields.InstanceHashField(indexable=True)
 
     def hmget_dict(self, *args):
         """

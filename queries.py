@@ -1,12 +1,12 @@
 from collections import defaultdict, Counter
-from models import Author, Tag, Rating, User, Book, BooksTags, BooksAuthors
+from models import Author, Tag, Rating, User, Book
 
 
 def first_query():
     """
     give 5 best books with tag '100-books'
     """
-    tag = Tag.get(name='100-books')
+    tag = Tag.get(name='100-books')._pk
 
     books_1 = Book.collection(tag1=tag).instances(lazy=True)
     books_2 = Book.collection(tag2=tag).instances(lazy=True)
@@ -42,7 +42,7 @@ def fifth_query():
     """
     the worst 5 books written by author 'J.K.Rowling'
     """
-    author = Author.get(full_name='J.K. Rowling')
+    author = Author.get(full_name='J.K. Rowling')._pk
 
     books_1 = Book.collection(author1=author).instances(lazy=True)
     books_2 = Book.collection(author2=author).instances(lazy=True)
@@ -76,10 +76,10 @@ def ninth_query():
     # TODO: modify to rating > 4
     """
     for each user select books with same language
-    and that aren't older than 20 years and the rating is > 4
+    and that aren't older than 10 years
     """
 
-    books = Book.collection(original_publication_year__gte=1999).instances()
+    books = Book.collection(original_publication_year__gte=2009).instances()
     # generate list of book dictionaries
     books_list = [book.hmget_dict('title', 'language_code') for book in books]
 

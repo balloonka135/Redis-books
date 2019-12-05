@@ -3,7 +3,7 @@ Data loading from csv files to Redis DB
 """
 
 from models import Author, Tag, Rating, \
-    User, Book, BooksAuthors, BooksTags
+    User, Book
 
 
 authors_path = '/Users/irinanazarchuk/Desktop/data/authors.csv'
@@ -55,30 +55,6 @@ def input_users(filepath):
 
 
 def input_books(filepath):
-    # try:
-    #     with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-    #         for line in f:
-    #             sk_book_id, book_id, best_book_id, work_id, books_count, \
-    #                 isbn, original_publication_year, original_title, title, \
-    #                 language_code, average_rating, ratings_count, \
-    #                 work_ratings_count, work_text_reviews_count = line.split('\t')
-
-    #             work_text_reviews_count = work_text_reviews_count.strip()
-
-    #             book = Book(
-    #                 sk_book_id=sk_book_id, book_id=book_id, best_book_id=best_book_id, work_id=work_id, \
-    #                 books_count=books_count, isbn=isbn, original_publication_year=original_publication_year, \
-    #                 original_title=original_title, title=title, language_code=language_code, \
-    #                 average_rating=average_rating, ratings_count=ratings_count, \
-    #                 work_ratings_count=work_ratings_count, \
-    #                 work_text_reviews_count=work_text_reviews_count
-    #             )
-
-    #             # print(book.hmget_dict('book_id', 'author_id', 'title'))
-    # except Exception as e:
-    #     print(e)
-
-    # -------------- NEW --------------
     try:
         with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
@@ -96,7 +72,8 @@ def input_books(filepath):
                     author1 = 'None'
                 else:
                     try:
-                        author1 = Author.get(author_id=aid1)
+                        # author1 = Author.get(author_id=aid1)
+                        author1 = Author.get(author_id=aid1)._pk
                     except Exception:
                         author1 = 'None'
 
@@ -104,7 +81,7 @@ def input_books(filepath):
                     author2 = 'None'
                 else:
                     try:
-                        author2 = Author.get(author_id=aid2)
+                        author2 = Author.get(author_id=aid2)._pk
                     except Exception:
                         author2 = 'None'
 
@@ -112,7 +89,7 @@ def input_books(filepath):
                     author3 = 'None'
                 else:
                     try:
-                        author3 = Author.get(author_id=aid3)
+                        author3 = Author.get(author_id=aid3)._pk
                     except Exception:
                         author3 = 'None'
 
@@ -120,7 +97,7 @@ def input_books(filepath):
                     tag1 = 'None'
                 else:
                     try:
-                        tag1 = Tag.get(tag_id=tid1)
+                        tag1 = Tag.get(tag_id=tid1)._pk
                     except Exception:
                         tag1 = 'None'
 
@@ -128,7 +105,7 @@ def input_books(filepath):
                     tag2 = 'None'
                 else:
                     try:
-                        tag2 = Tag.get(tag_id=tid2)
+                        tag2 = Tag.get(tag_id=tid2)._pk
                     except Exception:
                         tag2 = 'None'
 
@@ -136,7 +113,7 @@ def input_books(filepath):
                     tag3 = 'None'
                 else:
                     try:
-                        tag3 = Tag.get(tag_id=tid3)
+                        tag3 = Tag.get(tag_id=tid3)._pk
                     except Exception:
                         tag3 = 'None'
 
@@ -144,7 +121,7 @@ def input_books(filepath):
                     tag4 = 'None'
                 else:
                     try:
-                        tag4 = Tag.get(tag_id=tid4)
+                        tag4 = Tag.get(tag_id=tid4)._pk
                     except Exception:
                         tag4 = 'None'
 
@@ -152,7 +129,7 @@ def input_books(filepath):
                     tag5 = 'None'
                 else:
                     try:
-                        tag5 = Tag.get(tag_id=tid5)
+                        tag5 = Tag.get(tag_id=tid5)._pk
                     except Exception:
                         tag5 = 'None'
 
@@ -195,53 +172,6 @@ def input_ratings(filepath):
     except Exception as e:
         print(e)
 
-
-# def input_books_tags(filepath):
-#     try:
-#         with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-#             for line in f:
-#                 t_id, b_id, count = line.split(',')
-#                 t_id = t_id.strip()
-#                 b_id = b_id.strip()
-#                 count = count.strip()
-
-#                 try:
-#                     sk_tag_id = Tag.get(tag_id=t_id)
-#                 except Exception:
-#                     sk_tag_id = 'None'
-
-#                 try:
-#                     sk_book_id = Book.get(sk_book_id=b_id)
-#                 except Exception:
-#                     sk_book_id = 'None'
-
-#                 BooksTags(sk_tag_id=sk_tag_id, sk_book_id=sk_book_id,
-#                           count=count)
-#     except Exception as e:
-#         print(e)
-
-
-# def input_books_authors(filepath):
-#     try:
-#         with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-#             for line in f:
-#                 t_id, b_id = line.split(',')
-#                 t_id = t_id.strip()
-#                 b_id = b_id.strip()
-
-#                 try:
-#                     sk_author_id = Author.get(author_id=t_id)
-#                 except Exception:
-#                     sk_author_id = 'None'
-
-#                 try:
-#                     sk_book_id = Book.get(sk_book_id=b_id)
-#                 except Exception:
-#                     sk_book_id = 'None'
-
-#                 BooksAuthors(sk_author_id=sk_author_id, sk_book_id=sk_book_id)
-#     except Exception as e:
-#         print(e)
 
 
 if __name__ == '__main__':
