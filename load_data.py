@@ -73,6 +73,7 @@ def input_books(filepath):
                 else:
                     try:
                         # author1 = Author.get(author_id=aid1)
+                        aid1 = str(int(float(aid1)))
                         author1 = Author.get(author_id=aid1)._pk
                     except Exception:
                         author1 = 'None'
@@ -81,6 +82,7 @@ def input_books(filepath):
                     author2 = 'None'
                 else:
                     try:
+                        aid2 = str(int(float(aid2)))
                         author2 = Author.get(author_id=aid2)._pk
                     except Exception:
                         author2 = 'None'
@@ -89,6 +91,7 @@ def input_books(filepath):
                     author3 = 'None'
                 else:
                     try:
+                        aid3 = str(int(float(aid3)))
                         author3 = Author.get(author_id=aid3)._pk
                     except Exception:
                         author3 = 'None'
@@ -97,6 +100,7 @@ def input_books(filepath):
                     tag1 = 'None'
                 else:
                     try:
+                        tid1 = str(int(float(tid1)))
                         tag1 = Tag.get(tag_id=tid1)._pk
                     except Exception:
                         tag1 = 'None'
@@ -105,6 +109,7 @@ def input_books(filepath):
                     tag2 = 'None'
                 else:
                     try:
+                        tid2 = str(int(float(tid2)))
                         tag2 = Tag.get(tag_id=tid2)._pk
                     except Exception:
                         tag2 = 'None'
@@ -113,6 +118,7 @@ def input_books(filepath):
                     tag3 = 'None'
                 else:
                     try:
+                        tid3 = str(int(float(tid3)))
                         tag3 = Tag.get(tag_id=tid3)._pk
                     except Exception:
                         tag3 = 'None'
@@ -121,6 +127,7 @@ def input_books(filepath):
                     tag4 = 'None'
                 else:
                     try:
+                        tid4 = str(int(float(tid4)))
                         tag4 = Tag.get(tag_id=tid4)._pk
                     except Exception:
                         tag4 = 'None'
@@ -129,6 +136,7 @@ def input_books(filepath):
                     tag5 = 'None'
                 else:
                     try:
+                        tid5 = str(int(float(tid5)))
                         tag5 = Tag.get(tag_id=tid5)._pk
                     except Exception:
                         tag5 = 'None'
@@ -164,7 +172,7 @@ def input_ratings(filepath):
                     user_id = 'None'
 
                 try:
-                    book_id = Book.get(book_id=b_id)
+                    book_id = Book.get(sk_book_id=b_id)
                 except Exception:
                     book_id = 'None'
 
@@ -175,13 +183,11 @@ def input_ratings(filepath):
 
 
 if __name__ == '__main__':
-    input_authors(authors_path)
+    # input_authors(authors_path)
     # input_tags(tags_path)
     # input_users(users_path)
     # input_books(books_path)
-    # input_ratings(ratings_path)
-    # input_books_tags(books_tags_path)
-    # input_books_authors(books_authors_path)
+    input_ratings(ratings_path)
 
 
 

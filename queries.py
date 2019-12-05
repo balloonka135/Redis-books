@@ -8,19 +8,17 @@ def first_query():
     """
     tag = Tag.get(name='100-books')._pk
 
-    books_1 = Book.collection(tag1=tag).instances(lazy=True)
-    books_2 = Book.collection(tag2=tag).instances(lazy=True)
-    books_3 = Book.collection(tag3=tag).instances(lazy=True)
-    books_4 = Book.collection(tag4=tag).instances(lazy=True)
+    books_1 = Book.collection(tag1=tag).sort(by='average_rating').instances(lazy=True)
+    books_2 = Book.collection(tag2=tag).sort(by='average_rating').instances(lazy=True)
+    books_3 = Book.collection(tag3=tag).sort(by='average_rating').instances(lazy=True)
+    books_4 = Book.collection(tag4=tag).sort(by='average_rating').instances(lazy=True)
 
     books = list(set(books_1) | set(books_2) | set(books_3) | set(books_4))
 
-    rated_books = books.sort(by='average_rating')
-
-    if len(rated_books) >= 5:
-        return rated_books[-5:]
+    if len(books) >= 5:
+        return books[-5:]
     else:
-        return rated_books
+        return books
 
 
 def third_query():
@@ -44,18 +42,16 @@ def fifth_query():
     """
     author = Author.get(full_name='J.K. Rowling')._pk
 
-    books_1 = Book.collection(author1=author).instances(lazy=True)
-    books_2 = Book.collection(author2=author).instances(lazy=True)
-    books_3 = Book.collection(author3=author).instances(lazy=True)
+    books_1 = Book.collection(author1=author).sort(by='average_rating').instances(lazy=True)
+    books_2 = Book.collection(author2=author).sort(by='average_rating').instances(lazy=True)
+    books_3 = Book.collection(author3=author).sort(by='average_rating').instances(lazy=True)
 
     books = list(set(books_1) | set(books_2) | set(books_3))
 
-    rated_books = books.sort(by='average_rating')
-
-    if len(rated_books) >= 5:
-        return rated_books[:5]
+    if len(books) >= 5:
+        return books[:5]
     else:
-        return rated_books
+        return books
 
 
 def seventh_query():
@@ -73,13 +69,11 @@ def seventh_query():
 
 
 def ninth_query():
-    # TODO: modify to rating > 4
     """
-    for each user select books with same language
-    and that aren't older than 10 years
+    for each user select books from 2009 with same language
     """
 
-    books = Book.collection(original_publication_year__gte=2009).instances()
+    books = Book.collection(original_publication_year='2009').instances()
     # generate list of book dictionaries
     books_list = [book.hmget_dict('title', 'language_code') for book in books]
 
@@ -101,5 +95,4 @@ def ninth_query():
 
 
 if __name__ == '__main__':
-    first_query()
-
+    ninth_query()
