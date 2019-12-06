@@ -34,11 +34,11 @@ WHERE TITLE = 'Gone Girl'
 
 
 /*
-    9) for each user select books with same language
-       and that aren't older then 10 years
+    9) for each female user select books with same language
+       that are published in 2009
 */
 SELECT USERS.NAMEUSER, BOOKS.TITLE FROM USERS, BOOKS
-WHERE USERS.NATIVELANGUAGE = BOOKS.LANGUAGE AND BOOKS.YEAROFPUBLICATION >= 2009
+WHERE USERS.GENDER='female' AND USERS.NATIVELANGUAGE = BOOKS.LANGUAGE AND BOOKS.YEAROFPUBLICATION = 2009
 
 
 

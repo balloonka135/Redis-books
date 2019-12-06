@@ -75,16 +75,6 @@ class Book(BaseModel):
     work_ratings_count = fields.InstanceHashField(indexable=True)
     work_text_reviews_count = fields.InstanceHashField(indexable=True)
 
-    # author1 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-    # author2 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-    # author3 = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-
-    # tag1 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    # tag2 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    # tag3 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    # tag4 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-    # tag5 = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-
     author1 = fields.InstanceHashField(indexable=True)
     author2 = fields.InstanceHashField(indexable=True)
     author3 = fields.InstanceHashField(indexable=True)
@@ -120,34 +110,6 @@ class Rating(BaseRelatedModel):
         values = self.hmget(*args)
         keys = args or self._hashable_fields
         return dict(zip(keys, values))
-
-
-# class BooksTags(BaseRelatedModel):
-#     namespace = 'books_tags'
-
-#     sk_tag_id = related.FKInstanceHashField('Tag', related_name='%(namespace)s_%(model)s_set')
-#     sk_book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
-#     count = fields.InstanceHashField(indexable=True)
-
-#     def hmget_dict(self, *args):
-#         """
-#         A call to hmget but which return a dict with field names as keys,
-#         instead of only a list of values
-#         """
-#         values = self.hmget(*args)
-#         keys = args or self._hashable_fields
-#         return dict(zip(keys, values))
-
-
-# class BooksAuthors(BaseRelatedModel):
-#     namespace = 'books_authors'
-
-#     sk_author_id = related.FKInstanceHashField('Author', related_name='%(namespace)s_%(model)s_set')
-#     sk_book_id = related.FKInstanceHashField('Book', related_name='%(namespace)s_%(model)s_set')
-
-
-
-
 
 
 

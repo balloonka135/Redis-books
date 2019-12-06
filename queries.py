@@ -1,3 +1,4 @@
+import time
 from collections import defaultdict, Counter
 from models import Author, Tag, Rating, User, Book
 
@@ -70,14 +71,14 @@ def seventh_query():
 
 def ninth_query():
     """
-    for each user select books from 2009 with same language
+    for each female user select books from 2009 with same language
     """
 
     books = Book.collection(original_publication_year='2009').instances()
     # generate list of book dictionaries
     books_list = [book.hmget_dict('title', 'language_code') for book in books]
 
-    users = User.collection().instances()
+    users = User.collection(gender='female').instances()
     # generate list of user dictionaries
     users_list = [user.hmget_dict('full_name', 'language') for user in users]
 
@@ -90,9 +91,20 @@ def ninth_query():
                 book_title = book['title'].encode('utf8')
                 result[username].append(book_title)
 
-    print(result)
     return result
 
 
 if __name__ == '__main__':
-    ninth_query()
+    start_time = time.time()
+    result = ninth_query()
+    print("--- %s seconds ---\n\n" % (time.time() - start_time))
+
+    import itertools
+    new_dict = dict(itertools.islice(result.items(),15))
+
+    for key, value in new_dict.items():
+        print(key, value)
+
+    # print(result.hmget_dict('title', 'average_rating', 'original_publication_year', 'language_code'))
+
+
