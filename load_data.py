@@ -161,7 +161,7 @@ def input_ratings(filepath):
     try:
         with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
-                u_id, b_id, rating = line.split(',')
+                b_id, u_id, rating = line.split(',')
                 u_id = u_id.strip()
                 b_id = b_id.strip()
                 rating = rating.strip()
@@ -183,10 +183,10 @@ def input_ratings(filepath):
 
 
 if __name__ == '__main__':
-    # input_authors(authors_path)
-    # input_tags(tags_path)
-    # input_users(users_path)
-    # input_books(books_path)
+    input_authors(authors_path)
+    input_tags(tags_path)
+    input_users(users_path)
+    input_books(books_path)
     input_ratings(ratings_path)
 
 

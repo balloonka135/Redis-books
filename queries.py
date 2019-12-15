@@ -48,9 +48,8 @@ def third_query():
     """
 
     users_in_ratings = Rating.collection().values_list('user_id', flat=True)
-    # counts the number of each user occurence in a list
-    num_user_occurs = Counter(users_in_ratings)
-    most_common_user = num_user_occurs.most_common(1)
+    num_user_occurs = Counter(list(users_in_ratings))
+    most_common_user = num_user_occurs.most_common(10)
     user_id = most_common_user[0][0]
     user = User.get(user_id=user_id)
 
@@ -84,8 +83,8 @@ def fifth_query():
     books_2 = Book.collection(author2=author).sort(by='average_rating').instances(lazy=True)
     books_3 = Book.collection(author3=author).sort(by='average_rating').instances(lazy=True)
 
-    books = list(set(books_1) | set(books_2) | set(books_3))
-
+    books_list = list(set(books_1) | set(books_2) | set(books_3))
+    books = sorted(list([b.hmget('title')[0], b.hmget('average_rating')[0]] for b in books_list), key=lambda x: x[1])
     if len(books) >= 5:
         return books[:5]
     else:
@@ -96,9 +95,9 @@ def sixth_query():
     """
     6) Most rated Books that were published in 2015 (Number of Rates)
     """
-    books = Book.collection(original_publication_year='2015').instances()
+    books = Book.collection(original_publication_year='2015', language_code='en-US').instances()
     ratings = []
-    ratings = [r.hmget_dict('book_id')['book_id'] for b in books for r in Rating.collection(book_id=b._pk).instances(lazy = True)]
+    ratings = [r.hmget_dict('book_id')['book_id'] for b in books for r in Rating.collection(book_id=b).instances(lazy = True)]
     num_rating_books = Counter(ratings).most_common(10)
 
     for b in num_rating_books:
@@ -164,19 +163,14 @@ def tenth_query():
     """
         10) Users that rated Esteban's books with the highest rating per book.
     """
-    author = Author.get(full_name = 'Esteban Zimnyi')
-    books = Book.collection(author1 = author)
-    ratings = [r.hmget_dict('user_id') for r in Rating.collection(book_id = books, rating = 5).instances()]
-    best_users = [u.hmget_dict('full_name') for u in User.collection(user_id = ratings).instances()]
+    author = Author.get(full_name = 'Esteban Zimanyi')
+    book = Book.get(author1 = author._pk)
+    ratings = [r.hmget_dict('user_id') for r in Rating.collection(book_id = book, rating = 5).instances()]
+    best_users = [u.hmget_dict('full_name') for r in ratings for u in User.collection(user_id = r['user_id']).instances()]
     print(best_users)
 
 
 if __name__ == '__main__':
-    result = fourth_query()
-
-    # for r in result:
-    #     print(r.hmget_dict('title'))
-
-    # start_time = time.time()
-    # result = first_query()
-    # print("--- %s seconds ---\n\n" % (time.time() - start_time))
+    start_time = time.time()
+    result = sixth_query()
+    print("\n\n--- %s seconds ---\n\n" % (time.time() - start_time))
